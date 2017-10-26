@@ -35,10 +35,16 @@ public class MainScreen extends JFrame {
 	private JButton saveBtn;
 	private JButton clearBtn;
 
-	protected JTextField amtTextField; 			// >0
-	protected JTextField monthTextField; 		// 12 month ~ 72 month
-	protected JTextField aprTextField; 			// 0% ~ 75%
-	protected JTextField paymentTextField; 		// >0
+	private JTextField amtTextField; 			// >0
+	private JTextField monthTextField; 			// 12 month ~ 72 month
+	private JTextField aprTextField; 			// 0% ~ 75%
+	private JTextField paymentTextField; 		// >0
+	
+	private CalculatePayment payment;
+	private CalculateNumOfMonth numOfMonth;
+	private CalculateAPR apr;
+	private CalculateCapitalAmt totalAmt;
+	
 
 	// - Main
 
@@ -55,141 +61,7 @@ public class MainScreen extends JFrame {
 		});
 	}
 
-	// - Calculation Method
-
-	public void calculatePayment(double totalAmt, int month, double interestRate) {
-
-		double monthlyPayment;
-
-		if (interestRate == 0.0) {
-			monthlyPayment = totalAmt / month;
-
-		} else {
-
-			double monthlyRate = (interestRate / 100) / 12;
-
-			monthlyPayment = (totalAmt * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -month));
-		}
-
-		// show "0.34" when monthly payment come with "0.33"
-		// show "0.04" when monthly payment come with "0.03"
-		int decimal = (int) monthlyPayment;
-		double fraction = (monthlyPayment - decimal) * 100;
-
-		if (Math.round(fraction) == 33) {
-			fraction = 0.34;
-			monthlyPayment = decimal + fraction;
-			paymentTextField.setText(Double.toString(monthlyPayment));
-
-		} else if (Math.round(fraction) == 3) {
-			fraction = 0.04;
-			monthlyPayment = decimal + fraction;
-			paymentTextField.setText(Double.toString(monthlyPayment));
-		} else {
-			// general result of monthly payment
-			paymentTextField.setText(String.format("%.2f", monthlyPayment));
-		}
-
-	}
-
-	public void calculateTotalAmount(double interestRate, int month, double monthlyPayment) {
-
-		double totalAmt;
-
-		if (interestRate == 0.0) {
-			totalAmt = month * monthlyPayment;
-		} else {
-			double monthlyRate = (interestRate / 100) / 12;
-
-			totalAmt = monthlyPayment * (1 - Math.pow(1 + monthlyRate, -month)) / monthlyRate;
-		}
-
-		amtTextField.setText(String.format("%.2f", totalAmt));
-	}
-
-	public void calculateNumOfMonth(double totalAmt, double interestRate, double monthlyPayment) {
-
-		if (interestRate == 0.0) {
-			double result;
-			result = totalAmt / monthlyPayment;
-			if (result < 12 || result > 72) {
-
-				monthTextField.setText("Result out of bound");
-				// JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry
-				// - Number of Months out of bound");
-			} else {
-				int monthResult = (int) (Math.ceil(result));
-				monthTextField.setText(Integer.toString(monthResult));
-			}
-
-		} else {
-
-			double monthlyRate = (interestRate / 100) / 12;
-
-			double logValue = 1 - ((totalAmt * monthlyRate) / monthlyPayment);
-			double total = -1 * (Math.log(logValue) / Math.log(1 + monthlyRate));
-			int monthResult = (int) (Math.ceil(total));
-
-			if (monthResult < 12 || monthResult > 72) {
-				monthTextField.setText("Result out of bound");
-				// JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry
-				// - Number of Months out of bound");
-			} else {
-
-				monthTextField.setText(Integer.toString(monthResult));
-			}
-		}
-
-	}
-
-	public void calculateAPR(double totalAmt, double monthlyPayment, int month) {
-
-		double low = 0.0;
-		double mid = 0.0;
-		double high = 75.0;
-
-		double maxTotalAmt = monthlyPayment * month;
-
-		double maxMonthlyRate = (high / 100) / 12;
-		double minTotalAmt = monthlyPayment * (1 - Math.pow(1 + maxMonthlyRate, -month)) / maxMonthlyRate;
-
-		if (totalAmt < minTotalAmt || totalAmt > maxTotalAmt) {
-			aprTextField.setText("Result out of bound");
-			// JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry -
-			// Calculated APR is out of bound");
-
-		} else {
-
-			while (low <= high) {
-
-				// set the "mid" which is the temporary APR
-				mid = (low + high) / 2;
-
-				// Calculate the Principal with the temporary APR
-				double tempMonthlyRate = (mid / 100) / 12;
-
-				double testTotalAmt = monthlyPayment * (1 - Math.pow(1 + tempMonthlyRate, -month)) / tempMonthlyRate;
-
-				// Modify the temporary APR
-				if (testTotalAmt < totalAmt) {
-
-					high = mid - 0.001;
-
-				} else if (testTotalAmt > totalAmt) {
-
-					low = mid + 0.001;
-
-				} else {
-
-					aprTextField.setText(Double.toString(Math.round(mid * 100) / 100.0d));
-				}
-			}
-
-			aprTextField.setText(Double.toString(Math.round(mid * 100) / 100.0d));
-		}
-
-	}
-
+	
 	// - GUI Method
 
 	// Setup window
@@ -253,7 +125,9 @@ public class MainScreen extends JFrame {
 						if (numOfMonth < 12 || numOfMonth > 72 || monthlyPayment <= 0 || totalAmt <= 0) {
 							JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry");
 						} else {
-							calculateAPR(totalAmt, monthlyPayment, numOfMonth);
+							
+							apr = new CalculateAPR(totalAmt, monthlyPayment, numOfMonth);
+							aprTextField.setText(apr.calculate());
 						}
 
 					} else if (monthTextField.getText().isEmpty() & amtTextField.getText() != null
@@ -267,7 +141,9 @@ public class MainScreen extends JFrame {
 						if (totalAmt <= 0 || interestRate < 0 || interestRate > 75 || monthlyPayment <= 0) {
 							JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry");
 						} else {
-							calculateNumOfMonth(totalAmt, interestRate, monthlyPayment);
+							
+							numOfMonth = new CalculateNumOfMonth(totalAmt, interestRate, monthlyPayment);
+							monthTextField.setText(numOfMonth.calculate());
 						}
 
 					} else if (amtTextField.getText().isEmpty() & aprTextField.getText() != null
@@ -282,7 +158,10 @@ public class MainScreen extends JFrame {
 								|| monthlyPayment <= 0) {
 							JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry");
 						} else {
-							calculateTotalAmount(interestRate, numOfMonth, monthlyPayment);
+							
+							
+							totalAmt = new CalculateCapitalAmt(interestRate, numOfMonth, monthlyPayment);
+							amtTextField.setText(totalAmt.calculate());	
 						}
 
 					} else {
@@ -296,12 +175,14 @@ public class MainScreen extends JFrame {
 								|| interestRate > 75) {
 							JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry");
 						} else {
-							calculatePayment(totalAmt, numOfMonth, interestRate);
+							
+							payment = new CalculatePayment(totalAmt, numOfMonth, interestRate);
+							paymentTextField.setText(payment.calculate());
 						}
 
 					}
 				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(MainScreen.this, "Please enter at least 3 terms");
+					JOptionPane.showMessageDialog(MainScreen.this, "Please enter 3 terms");
 				}
 
 			}
@@ -329,7 +210,7 @@ public class MainScreen extends JFrame {
 			}
 		}
 
-		// center cell's text
+		// to center cell's text
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		for (int i = 0; i < 4; i++) {
