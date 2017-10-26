@@ -34,6 +34,8 @@ public class MainScreen extends JFrame {
 	private JButton calcBtn;
 	private JButton saveBtn;
 	private JButton clearBtn;
+	
+	// Test For GitHub Features.
 
 	protected JTextField amtTextField; 			// >0
 	protected JTextField monthTextField; 		// 12 month ~ 72 month
@@ -59,6 +61,7 @@ public class MainScreen extends JFrame {
 
 	public void calculatePayment(double totalAmt, int month, double interestRate) {
 
+		// Test For GitHub Features.!!
 		double monthlyPayment;
 
 		if (interestRate == 0.0) {
