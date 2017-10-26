@@ -28,7 +28,6 @@ public class CalculateAPR implements Calculator{
 		double minTotalAmt = monthlyPayment * (1 - Math.pow(1 + maxMonthlyRate, -month)) / maxMonthlyRate;
 
 		if (totalAmt < minTotalAmt || totalAmt > maxTotalAmt) {
-			//aprTextField.setText("Result out of bound");
 			
 			return "Result out of bound";
 			
@@ -39,12 +38,12 @@ public class CalculateAPR implements Calculator{
 				// set the "mid" which is the temporary APR
 				mid = (low + high) / 2;
 
-				// Calculate the Principal with the temporary APR
+				// calculate the Principal with the temporary APR
 				double tempMonthlyRate = (mid / 100) / 12;
 
 				double testTotalAmt = monthlyPayment * (1 - Math.pow(1 + tempMonthlyRate, -month)) / tempMonthlyRate;
 
-				// Modify the temporary APR
+				// modify the temporary APR
 				if (testTotalAmt < totalAmt) {
 
 					high = mid - 0.001;
@@ -55,13 +54,9 @@ public class CalculateAPR implements Calculator{
 
 				} else {
 
-					//aprTextField.setText(Double.toString(Math.round(mid * 100) / 100.0d));
-					
 					return Double.toString(Math.round(mid * 100) / 100.0d);
 				}
 			}
-
-			//aprTextField.setText(Double.toString(Math.round(mid * 100) / 100.0d));
 			
 			return Double.toString(Math.round(mid * 100) / 100.0d);
 		}

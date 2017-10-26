@@ -28,7 +28,6 @@ public class CalculateCapitalAmt implements Calculator {
 			totalAmt = monthlyPayment * (1 - Math.pow(1 + monthlyRate, -month)) / monthlyRate;
 		}
 
-		//amtTextField.setText(String.format("%.2f", totalAmt));
 		return String.format("%.2f", totalAmt);
 	}
 

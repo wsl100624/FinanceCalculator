@@ -21,14 +21,11 @@ public class CalculateNumOfMonth implements Calculator {
 			double result;
 			result = totalAmt / monthlyPayment;
 			if (result < 12 || result > 72) {
-
-				//monthTextField.setText("Result out of bound");
 				
 				return "Result out of bound";
 				
 			} else {
 				int monthResult = (int) (Math.ceil(result));
-				//monthTextField.setText(Integer.toString(monthResult));
 				
 				return Integer.toString(monthResult);
 			}
@@ -42,13 +39,10 @@ public class CalculateNumOfMonth implements Calculator {
 			int monthResult = (int) (Math.ceil(total));
 
 			if (monthResult < 12 || monthResult > 72) {
-				
-				//monthTextField.setText("Result out of bound");
-				
+								
 				return "Result out of bound";
 			} else {
 
-				//monthTextField.setText(Integer.toString(monthResult));
 				return Integer.toString(monthResult);
 			}
 		}

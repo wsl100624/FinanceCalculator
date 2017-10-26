@@ -37,19 +37,17 @@ public class CalculatePayment implements Calculator{
 		if (Math.round(fraction) == 33) {
 			fraction = 0.34;
 			monthlyPayment = decimal + fraction;
-			//paymentTextField.setText(Double.toString(monthlyPayment));
+
 			return Double.toString(monthlyPayment);
 
 		} else if (Math.round(fraction) == 3) {
 			fraction = 0.04;
 			monthlyPayment = decimal + fraction;
-			//paymentTextField.setText(Double.toString(monthlyPayment));
+
 			return Double.toString(monthlyPayment);
 		} else {
 			// general result of monthly payment
-			
-			//paymentTextField.setText(String.format("%.2f", monthlyPayment));
-			
+						
 			return String.format("%.2f", monthlyPayment);
 		}
 
