@@ -163,6 +163,7 @@ public class MainScreen extends JFrame {
 							
 							totalAmt = new CalculateCapitalAmt(interestRate, numOfMonth, monthlyPayment);
 							amtTextField.setText(totalAmt.calculate());	
+							firstMonthPayment = payment.getFirstMonthPayment();
 						}
 
 					} else {
@@ -196,7 +197,7 @@ public class MainScreen extends JFrame {
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "Capital Amount", "Month", "    APR  %", "First Payment", "Last Payment" }));
+				new String[] { "Capital Amount", "Number of Months", "    APR  %", "First Payment", "Last Payment" }));
 
 		// change column width
 		TableColumn column = null;
