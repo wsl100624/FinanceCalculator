@@ -5,6 +5,7 @@ public class CalculatePayment implements Calculator{
 	private double totalAmt;
 	private int month;
 	private double interestRate;
+	private double firstMonthPayment;
 	
 	
 	public CalculatePayment(double totalAmt, int month, double interestRate) {
@@ -17,16 +18,18 @@ public class CalculatePayment implements Calculator{
 	
 	public String calculate() {
 
-		double monthlyPayment;
+		double monthlyPayment; // also final month payment
 
 		if (interestRate == 0.0) {
 			monthlyPayment = totalAmt / month;
+			firstMonthPayment = monthlyPayment;
 
 		} else {
 
 			double monthlyRate = (interestRate / 100) / 12;
 
 			monthlyPayment = (totalAmt * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -month));
+			firstMonthPayment = monthlyPayment;
 		}
 
 		// show "0.34" when monthly payment come with "0.33"
@@ -51,6 +54,11 @@ public class CalculatePayment implements Calculator{
 			return String.format("%.2f", monthlyPayment);
 		}
 
+	}
+
+
+	public String getFirstMonthPayment() {
+		return String.format("%.2f", firstMonthPayment);
 	}
 
 }

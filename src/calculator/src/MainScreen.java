@@ -45,6 +45,8 @@ public class MainScreen extends JFrame {
 	private CalculateAPR apr;
 	private CalculateCapitalAmt totalAmt;
 	
+	String firstMonthPayment;
+	
 
 	// - Main
 
@@ -176,6 +178,7 @@ public class MainScreen extends JFrame {
 							
 							payment = new CalculatePayment(totalAmt, numOfMonth, interestRate);
 							paymentTextField.setText(payment.calculate());
+							firstMonthPayment = payment.getFirstMonthPayment();
 						}
 
 					}
@@ -193,7 +196,7 @@ public class MainScreen extends JFrame {
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "  Capital Amount", "Number of Months", "       APR  %", " Monthly Payment" }));
+				new String[] { "Capital Amount", "Month", "    APR  %", "First Payment", "Last Payment" }));
 
 		// change column width
 		TableColumn column = null;
@@ -242,7 +245,8 @@ public class MainScreen extends JFrame {
 					columnPosition[0] = "$ " + amtTextField.getText();
 					columnPosition[1] = monthTextField.getText();
 					columnPosition[2] = aprTextField.getText() + " %";
-					columnPosition[3] = "$ " + paymentTextField.getText();
+					columnPosition[3] = "$ " + firstMonthPayment;
+					columnPosition[4] = "$ " + paymentTextField.getText();
 					((DefaultTableModel) table.getModel()).addRow(columnPosition);
 
 					// clear textFields
