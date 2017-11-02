@@ -85,7 +85,7 @@ public class MainScreen extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
-		JLabel lblNewLabel_1 = new JLabel("Number of Months (12 - 72): ");
+		JLabel lblNewLabel_1 = new JLabel("Number of Months: ");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 
