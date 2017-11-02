@@ -199,22 +199,22 @@ public class MainScreen extends JFrame {
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "Capital Amount", "Month", "   APR  %", "First Payment", "Last Payment" }));
+				new String[] { "  Capital Amount", "    Month", "   APR  %", " First Payment", "Last Payment" }));
 
 		// change column width
 		TableColumn column = null;
 		for (int i = 0; i < 4; i++) {
 			column = table.getColumnModel().getColumn(i);
 			if (i == 1) {
-				column.setPreferredWidth(70); // second column
+				column.setPreferredWidth(60); // second column
 			} else if (i == 2) {
-				column.setPreferredWidth(70);
+				column.setPreferredWidth(60);
 			} else if (i == 3) {
-				column.setPreferredWidth(120);
+				column.setPreferredWidth(90);
 			} else if (i == 4) {
 				column.setPreferredWidth(120);
 			} else {
-				column.setPreferredWidth(90);
+				column.setPreferredWidth(110);
 			}
 		}
 
