@@ -5,6 +5,7 @@ public class CalculateNumOfMonth implements Calculator {
 	private double totalAmt;
 	private double interestRate;
 	private double monthlyPayment;
+	private double firstMonthPayment;
 	
 
 	public CalculateNumOfMonth(double totalAmt, double interestRate, double monthlyPayment) {
@@ -15,20 +16,15 @@ public class CalculateNumOfMonth implements Calculator {
 	}
 	
 	@Override
-	public String calculate() {
+	public String calculate() {	
 		
 		if (interestRate == 0.0) {
 			double result;
 			result = totalAmt / monthlyPayment;
-			if (result < 12 || result > 72) {
+			
+			int monthResult = (int) (Math.ceil(result));
 				
-				return "Result out of bound";
-				
-			} else {
-				int monthResult = (int) (Math.ceil(result));
-				
-				return Integer.toString(monthResult);
-			}
+			return Integer.toString(monthResult);
 
 		} else {
 
@@ -38,14 +34,28 @@ public class CalculateNumOfMonth implements Calculator {
 			double total = -1 * (Math.log(logValue) / Math.log(1 + monthlyRate));
 			int monthResult = (int) (Math.ceil(total));
 
-			if (monthResult < 12 || monthResult > 72) {
-								
-				return "Result out of bound";
-			} else {
 
-				return Integer.toString(monthResult);
-			}
+			return Integer.toString(monthResult);
+			
 		}
+	}
+
+	public String getFirstMonthPayment() {
+		
+		firstMonthPayment = monthlyPayment;
+		
+		int decimal = (int) monthlyPayment;
+		double fraction = (monthlyPayment - decimal) * 100;
+
+		if (Math.round(fraction) == 33) {
+			
+			firstMonthPayment = monthlyPayment;
+
+		} else if (Math.round(fraction) == 34) {
+			firstMonthPayment = monthlyPayment - 0.01;
+		} 
+		
+		return String.format("%.2f", firstMonthPayment);
 	}
 	
 

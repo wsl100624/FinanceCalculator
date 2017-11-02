@@ -130,6 +130,7 @@ public class MainScreen extends JFrame {
 							
 							apr = new CalculateAPR(totalAmt, monthlyPayment, numOfMonth);
 							aprTextField.setText(apr.calculate());
+							firstMonthPayment = apr.getFirstMonthPayment();
 						}
 
 					} else if (monthTextField.getText().isEmpty() & amtTextField.getText() != null
@@ -146,6 +147,7 @@ public class MainScreen extends JFrame {
 							
 							numOfMonth = new CalculateNumOfMonth(totalAmt, interestRate, monthlyPayment);
 							monthTextField.setText(numOfMonth.calculate());
+							firstMonthPayment = numOfMonth.getFirstMonthPayment();
 						}
 
 					} else if (amtTextField.getText().isEmpty() & aprTextField.getText() != null
@@ -163,7 +165,7 @@ public class MainScreen extends JFrame {
 							
 							totalAmt = new CalculateCapitalAmt(interestRate, numOfMonth, monthlyPayment);
 							amtTextField.setText(totalAmt.calculate());	
-							firstMonthPayment = payment.getFirstMonthPayment();
+							firstMonthPayment = totalAmt.getFirstMonthPayment();
 						}
 
 					} else {

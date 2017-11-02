@@ -41,8 +41,8 @@ public class CalculateCapitalAmt implements Calculator {
 		return String.format("%.2f", totalAmt);
 	}
 
-	public double getFirstMonthPayment() {
-		return firstMonthPayment;
+	public String getFirstMonthPayment() {
+		return String.format("%.2f", firstMonthPayment);
 	}
 
 }
