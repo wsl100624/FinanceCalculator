@@ -122,7 +122,7 @@ public class MainScreen extends JFrame {
 						double monthlyPayment = Double.parseDouble(paymentTextField.getText());
 						double totalAmt = Double.parseDouble(amtTextField.getText());
 
-						if (numOfMonth < 12 || numOfMonth > 72 || monthlyPayment <= 0 || totalAmt <= 0) {
+						if (monthlyPayment <= 0 || totalAmt <= 0) {
 							JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry");
 						} else {
 							
@@ -154,8 +154,7 @@ public class MainScreen extends JFrame {
 						int numOfMonth = Integer.parseInt(monthTextField.getText());
 						double monthlyPayment = Double.parseDouble(paymentTextField.getText());
 
-						if (interestRate < 0 || interestRate > 75 || numOfMonth < 12 || numOfMonth > 72
-								|| monthlyPayment <= 0) {
+						if (interestRate < 0 || interestRate > 75 || monthlyPayment <= 0) {
 							JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry");
 						} else {
 							
@@ -171,8 +170,7 @@ public class MainScreen extends JFrame {
 						int numOfMonth = Integer.parseInt(monthTextField.getText());
 						double interestRate = Double.parseDouble(aprTextField.getText());
 
-						if (totalAmt <= 0 || numOfMonth < 12 || numOfMonth > 72 || interestRate < 0
-								|| interestRate > 75) {
+						if (totalAmt <= 0 || interestRate < 0 || interestRate > 75) {
 							JOptionPane.showMessageDialog(MainScreen.this, "Invalid Entry");
 						} else {
 							
