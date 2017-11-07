@@ -45,7 +45,7 @@ public class MainScreen extends JFrame {
 	private CalculateAPR apr;
 	private CalculateCapitalAmt totalAmt;
 	
-	String firstMonthPayment;
+	String lastPayment;
 	
 
 	// - Main
@@ -130,7 +130,7 @@ public class MainScreen extends JFrame {
 							
 							apr = new CalculateAPR(totalAmt, monthlyPayment, numOfMonth);
 							aprTextField.setText(apr.calculate());
-							firstMonthPayment = apr.getFirstMonthPayment();
+							lastPayment = apr.getlastPayment();
 						}
 
 					} else if (monthTextField.getText().isEmpty() & amtTextField.getText() != null
@@ -147,7 +147,7 @@ public class MainScreen extends JFrame {
 							
 							numOfMonth = new CalculateNumOfMonth(totalAmt, interestRate, monthlyPayment);
 							monthTextField.setText(numOfMonth.calculate());
-							firstMonthPayment = numOfMonth.getFirstMonthPayment();
+							lastPayment = numOfMonth.getLastPayment();
 						}
 
 					} else if (amtTextField.getText().isEmpty() & aprTextField.getText() != null
@@ -165,7 +165,7 @@ public class MainScreen extends JFrame {
 							
 							totalAmt = new CalculateCapitalAmt(interestRate, numOfMonth, monthlyPayment);
 							amtTextField.setText(totalAmt.calculate());	
-							firstMonthPayment = totalAmt.getFirstMonthPayment();
+							lastPayment = totalAmt.getLastPayment();
 						}
 
 					} else {
@@ -181,7 +181,7 @@ public class MainScreen extends JFrame {
 							
 							payment = new CalculatePayment(totalAmt, numOfMonth, interestRate);
 							paymentTextField.setText(payment.calculate());
-							firstMonthPayment = payment.getFirstMonthPayment();
+							lastPayment = payment.getLastPayment();
 						}
 
 					}
@@ -199,7 +199,7 @@ public class MainScreen extends JFrame {
 
 		JTable table = new JTable();
 		table.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "  Capital Amount", "    Month", "   APR  %", " First Payment", "Last Payment" }));
+				new String[] { "  Capital Amount", "  Month", " APR", "  Monthly Payment", "Last Payment" }));
 
 		// change column width
 		TableColumn column = null;
@@ -208,9 +208,9 @@ public class MainScreen extends JFrame {
 			if (i == 1) {
 				column.setPreferredWidth(60); // second column
 			} else if (i == 2) {
-				column.setPreferredWidth(60);
+				column.setPreferredWidth(40);
 			} else if (i == 3) {
-				column.setPreferredWidth(90);
+				column.setPreferredWidth(110);
 			} else if (i == 4) {
 				column.setPreferredWidth(120);
 			} else {
@@ -252,8 +252,8 @@ public class MainScreen extends JFrame {
 					columnPosition[0] = "$ " + amtTextField.getText();
 					columnPosition[1] = monthTextField.getText();
 					columnPosition[2] = aprTextField.getText() + " %";
-					columnPosition[3] = "$ " + firstMonthPayment;
-					columnPosition[4] = "$ " + paymentTextField.getText();
+					columnPosition[3] = "$ " + paymentTextField.getText();
+					columnPosition[4] = "$ " + lastPayment;
 					((DefaultTableModel) table.getModel()).addRow(columnPosition);
 
 					// clear textFields
@@ -261,6 +261,7 @@ public class MainScreen extends JFrame {
 					monthTextField.setText(null);
 					aprTextField.setText(null);
 					paymentTextField.setText(null);
+					lastPayment = null;
 				}
 			}
 		});
@@ -276,6 +277,7 @@ public class MainScreen extends JFrame {
 				monthTextField.setText(null);
 				aprTextField.setText(null);
 				paymentTextField.setText(null);
+				lastPayment = null;
 			}
 		});
 

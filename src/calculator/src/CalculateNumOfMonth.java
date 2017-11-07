@@ -1,11 +1,17 @@
 package calculator.src;
 
+import java.text.DecimalFormat;
+
 public class CalculateNumOfMonth implements Calculator {
 	
 	private double totalAmt;
 	private double interestRate;
+	private double monthlyRate;
 	private double monthlyPayment;
-	private double firstMonthPayment;
+	
+	private int monthResult;
+	
+	private double lastPayment;
 	
 
 	public CalculateNumOfMonth(double totalAmt, double interestRate, double monthlyPayment) {
@@ -22,40 +28,45 @@ public class CalculateNumOfMonth implements Calculator {
 			double result;
 			result = totalAmt / monthlyPayment;
 			
-			int monthResult = (int) (Math.ceil(result));
+			monthResult = (int) (Math.round(result));
 				
 			return Integer.toString(monthResult);
 
 		} else {
 
-			double monthlyRate = (interestRate / 100) / 12;
+			monthlyRate = (interestRate / 100) / 12;
 
 			double logValue = 1 - ((totalAmt * monthlyRate) / monthlyPayment);
 			double total = -1 * (Math.log(logValue) / Math.log(1 + monthlyRate));
-			int monthResult = (int) (Math.ceil(total));
-
-
+			
+			monthResult = (int) (Math.ceil(total));
+		
 			return Integer.toString(monthResult);
 			
 		}
 	}
 
-	public String getFirstMonthPayment() {
+	public String getLastPayment() {
 		
-		firstMonthPayment = monthlyPayment;
-		
-		int decimal = (int) monthlyPayment;
-		double fraction = (monthlyPayment - decimal) * 100;
-
-		if (Math.round(fraction) == 33) {
+		if (interestRate == 0.0) {
+			int pastMonths = monthResult - 1 ; 
+			DecimalFormat decimal = new DecimalFormat(".##");
+			double pastPaid = Double.parseDouble(decimal.format(monthlyPayment)) * pastMonths;
 			
-			firstMonthPayment = monthlyPayment;
-
-		} else if (Math.round(fraction) == 34) {
-			firstMonthPayment = monthlyPayment - 0.01;
-		} 
+			lastPayment = totalAmt - pastPaid;
+		} else {
+			double realMonthlyPayment = (totalAmt * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -monthResult));
+			double totalAmountDue = realMonthlyPayment * monthResult;
+			int pastMonths = monthResult - 1 ; 
+			
+			double pastPaid = monthlyPayment * pastMonths;
+			
+			lastPayment = totalAmountDue - pastPaid;
+		}
 		
-		return String.format("%.2f", firstMonthPayment);
+		
+		
+		return String.format("%.2f", lastPayment);
 	}
 	
 

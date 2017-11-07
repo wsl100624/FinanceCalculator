@@ -1,11 +1,13 @@
 package calculator.src;
 
+import java.text.DecimalFormat;
+
 public class CalculateCapitalAmt implements Calculator {
 
 	private double interestRate;
 	private int month;
 	private double monthlyPayment;
-	private double firstMonthPayment;
+	private double lastPayment;
 	
 	
 	
@@ -22,27 +24,30 @@ public class CalculateCapitalAmt implements Calculator {
 		double totalAmt;
 
 		if (interestRate == 0.0) {
-			totalAmt = month * monthlyPayment;
+			totalAmt = Math.round(month * monthlyPayment);
 			
-			int decimal = (int) totalAmt;
-			double fraction = Math.round((totalAmt - decimal) * 100);
-			
-			if (fraction == 2 || fraction == 20) {
-				totalAmt = Math.floor(totalAmt);
-				firstMonthPayment = monthlyPayment - 0.01;
-			}
-
+			int pastMonths = month - 1 ; 
+			double pastPaid = monthlyPayment * pastMonths;
+			lastPayment = totalAmt - pastPaid;
+		
 		} else {
 			double monthlyRate = (interestRate / 100) / 12;
 
 			totalAmt = monthlyPayment * (1 - Math.pow(1 + monthlyRate, -month)) / monthlyRate;
+			
+			double totalAmountDue = Math.round(monthlyPayment*month);
+			int pastMonths = month - 1 ; 
+			double pastPaid = monthlyPayment * pastMonths;
+			
+			lastPayment = totalAmountDue - pastPaid;
 		}
 
 		return String.format("%.2f", totalAmt);
 	}
 
-	public String getFirstMonthPayment() {
-		return String.format("%.2f", firstMonthPayment);
+	public String getLastPayment() {
+		
+		return String.format("%.2f", lastPayment);
 	}
 
 }
